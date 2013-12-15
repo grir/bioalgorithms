@@ -71,9 +71,9 @@ void readData(string fname)
        ssin >> vert;
        while (ssin >> v) {
            Edge edge(vert,v);
-           Edge edge2(v,vert);
+        //   Edge edge2(v,vert);
            graph.push_back( edge );
-           graph.push_back( edge2 );
+       //    graph.push_back( edge2 );
            
        } 
 
@@ -93,7 +93,28 @@ int findEdgeByV1(int v, bool* used){
     return -1;       
 
 }
+////////////////////////////////////////////////////////////
+void insertAfter(int findValue, list<int>& base, list<int>& toInsert){
 
+   list<int>::iterator itf;
+   bool found = false;
+   for (list<int>::iterator it = base.begin(); it != base.end(); it++)  
+      if ( *it == findValue ){
+         itf = it;
+         found = true;
+      }   
+         
+         
+   if ( ! found )  return;
+   
+   
+   base.insert(++itf, toInsert.begin(), toInsert.end());    
+  
+   return;  
+
+
+}
+///////////////////////////////////////////////////////////
 list<int> getCycle(int vi, bool* used){
   list<int> path;
 
@@ -147,7 +168,7 @@ list<int> euler(){
      used[i] = false;
   
 
-  int v = 4;//graph[0].v1;
+  int v = 0;//graph[0].v1;
   set<int> trav;
   trav.insert(v);
   
@@ -167,12 +188,16 @@ list<int> euler(){
      used[edge] = true;
   } while ( trav.find(nxtv) == trav.end() );
 
+
+  edge = findEdgeByV1( nxtv, used );   
+  nxtv = graph[edge].v2;
+  used[edge] = true;
   path.push_back(nxtv);      
 
   // other cycles:
   
   printList(path);
-  
+ /* 
   while (true){
   
      int v = -1;
@@ -201,7 +226,7 @@ list<int> euler(){
        path.insert(it, *it1);
   
   }
-
+*/
 
   return path;
 
